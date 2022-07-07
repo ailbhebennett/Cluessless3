@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Cluessless3</string>
+    <string name="Clueless">string</string>
+    <string name="clothingName">clothingName</string>
+    <string name="clothingDescription">Clothing Description</string>
+    <string name="clothingColour">Clothing Colour</string>
+    <string name="clothing_colour_edit_text" />
+    <string name="clothing_name_edit_text" />
+    <string name="clothing_details_edit_text" />
+</resources>
