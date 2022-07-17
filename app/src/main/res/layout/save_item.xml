@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/save_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="285dp"
+        android:layout_height="330dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintStart_toStartOf="@+id/save_item"
+        app:layout_constraintTop_toTopOf="@+id/save_item" />
+
+    <EditText
+        android:id="@+id/enter_name"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="176dp"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enter_details"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginEnd="176dp"
+        android:text="Details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enter_colour"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="180dp"
+        android:text="Colour"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/name_txt"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="104dp"
+        app:layout_constraintEnd_toStartOf="@+id/enter_colour"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/type_txt"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="352dp"
+        app:layout_constraintEnd_toStartOf="@+id/enter_colour"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/colour_txt"
+        android:layout_width="200dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="220dp"
+        app:layout_constraintEnd_toStartOf="@+id/enter_colour"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
