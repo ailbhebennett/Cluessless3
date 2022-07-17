@@ -1,5 +1,4 @@
 package com.example.cluessless3;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,10 +10,10 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CameraView extends AppCompatActivity {
+public class CameraScan extends AppCompatActivity {
 
     ImageView product_image;
-    Button btn_view_clothing;
+    Button btn_scan_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +21,10 @@ public class CameraView extends AppCompatActivity {
         setContentView((R.layout.camera_tab1));
 
 
-        btn_view_clothing = (Button)findViewById(R.id.btn_scan_now);
+        btn_scan_now = (Button)findViewById(R.id.btn_scan_now);
         product_image = (ImageView)findViewById(R.id.product_image);
 
-        btn_view_clothing.setOnClickListener(new View.OnClickListener() {
+        btn_scan_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -40,5 +39,4 @@ public class CameraView extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
         product_image.setImageBitmap(bitmap);
-    }
-}
+    }}

@@ -37,6 +37,11 @@
             android:layout_centerHorizontal="true"
             ></TextView>
 
+        <Button
+            android:id="@+id/btn_view_clothing"
+            android:layout_width="75dp"
+            android:layout_height="75dp"/>
+
     </RelativeLayout>
 
 </LinearLayout>

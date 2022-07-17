@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "483256019966",
+    "firebase_url": "https://cluelessdb-2e793-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "cluelessdb-2e793",
     "storage_bucket": "cluelessdb-2e793.appspot.com"
   },
@@ -10,35 +11,6 @@
         "mobilesdk_app_id": "1:483256019966:android:c650c41dd760d1f64f2eaf",
         "android_client_info": {
           "package_name": "com.example.cluessless3"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "483256019966-5lpcv9sri03s0u3a3okftk0lkcif7hm8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAHMSbZGNa2r4NwcMLamNUUMdxb2WzmDmY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "483256019966-5lpcv9sri03s0u3a3okftk0lkcif7hm8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:483256019966:android:24627f058c55df5e4f2eaf",
-        "android_client_info": {
-          "package_name": "com.example.cluesslesstest"
         }
       },
       "oauth_client": [
