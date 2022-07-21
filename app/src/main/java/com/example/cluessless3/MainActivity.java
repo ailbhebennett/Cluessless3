@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.cluessless3.databinding.ActivityClothinglistBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
+        setContentView(R.layout.fragment_main);
 
         //Request camera permissions
         int MY_PERMISSIONS_REQUEST_CAMERA=0;
@@ -52,8 +51,33 @@ public class MainActivity extends AppCompatActivity {
 
         //Tabbed Layout
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        adapter = new Tab
+        tabLayout= (TabLayout) findViewById(R.id.tabView);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Scan CLothing"));
+        tabLayout.addTab(tabLayout.newTab().setText("View Clothing"));
+        tabLayout.addTab(tabLayout.newTab().setText("Saved Clothes"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(tabAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
 
