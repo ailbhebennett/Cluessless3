@@ -19,7 +19,7 @@ public class CameraView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((R.layout.camera_tab1));
+        setContentView(R.layout.fragment_scan);
 
 
         btn_view_clothing = (Button)findViewById(R.id.btn_scan_now);
