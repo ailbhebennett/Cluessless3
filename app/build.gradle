@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk 32
+    buildToolsVersion "23.0.2"
 
 
     defaultConfig {
@@ -32,6 +33,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            jni {
+                srcDirs 'src\\main\\jni'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -51,6 +59,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.quickbirdstudios:opencv:3.4.1'
+    //implementation project(':opencv')
 
 
 
