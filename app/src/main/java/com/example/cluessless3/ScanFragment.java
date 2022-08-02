@@ -3,18 +3,15 @@ package com.example.cluessless3;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
+import static com.example.cluessless3.R.string.imageCropError;
+
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +20,27 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.fragment.app.Fragment;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Context;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.concurrent.atomic.AtomicMarkableReference;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ScanFragment extends Fragment {
 
+    private static final Object TAG_IMAGE = "";
     public Button btnScan;
     private Button btn_saveToDatabase;
     public ImageView imageScan;
@@ -52,7 +55,8 @@ public class ScanFragment extends Fragment {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     //keep track of cropping intent
     final int PIC_CROP = 2;
-
+    public RequestQueue queue;
+    public Context crop;
 
     //taking photo
     @Override
@@ -61,6 +65,9 @@ public class ScanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_scan,container,false);
         btnScan = (Button) view.findViewById(R.id.btn_scan_now);
         imageScan = (ImageView) view.findViewById(R.id.product_image);
+
+
+        queue = Volley.newRequestQueue(crop);
 
         //onclick
         btnScan.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +79,6 @@ public class ScanFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 
@@ -85,7 +91,7 @@ public class ScanFragment extends Fragment {
                     //get picture URI
                     imageUri = data.getData();
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    performCrop();
+                    cropImageRequest(imageScan);
                 }
                 catch(Exception e){
 
@@ -107,31 +113,47 @@ public class ScanFragment extends Fragment {
         }
     };
 
-    private void performCrop() {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(imageUri, "image/*");
-            cropIntent.putExtra("Crop", "true");
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 256);
-            cropIntent.putExtra("outputY", 256);
+    private StringRequest cropImageRequest(ImageView imageCrop){
+        final String API = "&api_key=AIzaSyBFEuwHn5rqcrNYMMK22afZihf025dZ-Vc";
+        final ImageView image_view;
+        final String URL_PREFIX = "https://rapidapi.com/blacktrees/api/image-cropper";
+        final String DATA_SOURCE = "&ds=Standard Reference";
 
-            //get data
-            cropIntent.putExtra("return-data", true);
-            startActivityForResult(cropIntent, PIC_CROP);
+        String url = URL_PREFIX + API + image_view;
+
+        return new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject result = new JSONObject(response).getJSONObject("image");
+                            int maxItems = result.getInt("end");
+                            JSONArray resultList = result.getJSONArray("item");
+                        } catch (JSONException e) {
+                            Toast.makeText(crop.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                         Toast.makeText(crop.getApplicationContext(), getString(imageCropError), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        public void btnSearchClickEventHandler(View view){
+            queue.cancelAll(TAG_IMAGE);
+
+            StringRequest stringRequest = cropImageRequest(imageCrop.toString());
+            queue.add(stringRequest);
 
 
-        } catch (ActivityNotFoundException anfe){
-            String errorMessage = ("Not working");
-            Toast toast = Toast.makeText(getActivity() , errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
         }
 
 
-        private void saveImageToDatabase(); {
+        private void saveImageToDatabase(StorageReference storageRef ) {
 
-            StorageReference storageRef = firebaseStorage.getReference();
+           storageReference = firebaseStorage.getReference();
 
             btn_saveToDatabase Onclick(){
                 // Create a reference to "mountains.jpg"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cluessless3</string>
+    <string name="app_name">Cluessless</string>
     <string name="Clueless">string</string>
     <string name="clothingName">clothingName</string>
     <string name="clothingDescription">Clothing Description</string>
@@ -15,4 +15,5 @@
     <string name="view_clothing">View Clothing</string>
     <string name="view_saved_clothing">View Saved Clothing</string>
     <string name="add_clothing">Add Clothing</string>
+    <string name="imageCropError">ImageCrop not responding</string>
 </resources>
