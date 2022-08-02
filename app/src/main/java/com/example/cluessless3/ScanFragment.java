@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class ScanFragment extends Fragment {
 
@@ -103,9 +104,8 @@ public class ScanFragment extends Fragment {
             else if(resultC == RESULT_CANCELED){
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
             }
-
         }
-    }
+    };
 
     private void performCrop() {
         try {
@@ -126,6 +126,28 @@ public class ScanFragment extends Fragment {
             String errorMessage = ("Not working");
             Toast toast = Toast.makeText(getActivity() , errorMessage, Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+
+        private void saveImageToDatabase(); {
+
+            StorageReference storageRef = firebaseStorage.getReference();
+
+            btn_saveToDatabase Onclick(){
+                // Create a reference to "mountains.jpg"
+                StorageReference mountainsRef = storageRef.child("mountains.jpg");
+
+// Create a reference to 'images/mountains.jpg'
+                StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+
+// While the file names are the same, the references point to different files
+                mountainsRef.getName().equals(mountainImagesRef.getName());    // true
+                mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+
+            }
+
+
+
         }
 
     }

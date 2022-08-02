@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        jcenter()
     }
 }
 dependencyResolutionManagement {
@@ -14,3 +15,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Cluessless3"
 include ':app'
+
+include ':openCVLibrary3414'
+include ':progressfragment'
