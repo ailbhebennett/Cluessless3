@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     //Declare required variables
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private TabAdapter tabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +24,17 @@ public class MainActivity extends AppCompatActivity {
         //Tabbed Layout
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout= (TabLayout) findViewById(R.id.tabView);
+        tabAdapter = new TabAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        tabAdapter.addFragment(new ScanFragment(), "Add Clothing");
+        //tabAdapter.addFragment(new ViewFragment(), "View Clothing");
+        tabAdapter.addFragment(new ClothingFragment(), "Saved Clothing");
 
+        viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        tabAdapter.addFragment(new ScanFragment(), "Add Clothing");
-        tabAdapter.addFragment(new ViewFragment(), "View Clothing");
-        tabAdapter.addFragment(new ClothingFragment(), "Saved Clothing");
-        viewPager.setAdapter(tabAdapter);
+        viewPager.setCurrentItem(1);
 
 
+    }
 
-
-
-
-    }}
+}

@@ -19,31 +19,13 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         this.mTabs = Tabs;
     }
 
-    @NonNull
     @Override
     public Fragment getItem(int position) {
-
         return fragmentArrayList.get(position);
     }
-        /*switch(position){
-            case 0:
-                ScanFragment Tab1 = new ScanFragment();
-                return Tab1;
-            case 1:
-                ViewFragment Tab2 = new ViewFragment();
-                return Tab2;
-            case 3:
-                ClothingFragment Tab3 = new ClothingFragment();
-                return Tab3;
-            default:
-                return null;
-
-        }
-    }*/
 
     @Override
     public int getCount() {
-
         return fragmentArrayList.size();
     }
 
@@ -52,10 +34,9 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         fragmentTitle.add(title);
     }
 
+    @NonNull
+    @Override
     public CharSequence getPageTitle(int position){
         return fragmentTitle.get(position);
     }
-
-
-
 }

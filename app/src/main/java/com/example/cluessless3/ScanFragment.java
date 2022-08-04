@@ -2,10 +2,8 @@ package com.example.cluessless3;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-
 import static com.example.cluessless3.R.string.imageCropError;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,6 +55,7 @@ public class ScanFragment extends Fragment {
     final int PIC_CROP = 2;
     public RequestQueue queue;
     public Context crop;
+
 
     //taking photo
     @Override
@@ -113,9 +112,9 @@ public class ScanFragment extends Fragment {
         }
     };
 
-    private StringRequest cropImageRequest(ImageView imageCrop){
+    private StringRequest cropImageRequest(ImageView imageCrop) {
         final String API = "&api_key=AIzaSyBFEuwHn5rqcrNYMMK22afZihf025dZ-Vc";
-        final ImageView image_view;
+        final ImageView image_view = null;
         final String URL_PREFIX = "https://rapidapi.com/blacktrees/api/image-cropper";
         final String DATA_SOURCE = "&ds=Standard Reference";
 
@@ -137,21 +136,23 @@ public class ScanFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                         Toast.makeText(crop.getApplicationContext(), getString(imageCropError), Toast.LENGTH_LONG).show();
+                        Toast.makeText(crop.getApplicationContext(), getString(imageCropError), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
 
-        public void btnSearchClickEventHandler(View view){
+        private void btnSearchClickEventHandler(View view){
             queue.cancelAll(TAG_IMAGE);
 
-            StringRequest stringRequest = cropImageRequest(imageCrop.toString());
+            ImageView imageCrop = null;
+            StringRequest stringRequest = cropImageRequest(imageCrop);
             queue.add(stringRequest);
 
 
         }
 
 
-        private void saveImageToDatabase(StorageReference storageRef ) {
+       /* private void saveImageToDatabase(StorageReference storageRef ) {
 
            storageReference = firebaseStorage.getReference();
 
@@ -166,17 +167,8 @@ public class ScanFragment extends Fragment {
                 mountainsRef.getName().equals(mountainImagesRef.getName());    // true
                 mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
 
-            }
+            }*/
 
 
 
         }
-
-    }
-
-
-
-
-
-
-}

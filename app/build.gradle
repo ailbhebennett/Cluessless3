@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.quickbirdstudios:opencv:3.4.1'
     //implementation project(':opencv')
 
-
+    implementation 'androidx.appcompat:appcompat:1.1.x'
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.2.0')

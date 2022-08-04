@@ -8,12 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/Clueless" />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabView"
         android:layout_width="match_parent"
@@ -24,6 +18,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabTextColor="@color/white" />
 
-
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/Clueless" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
