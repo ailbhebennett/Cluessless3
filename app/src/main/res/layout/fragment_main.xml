@@ -13,15 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#E91E63"
+        android:background="@color/lightest_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabTextColor="@color/white" />
 
-    <androidx.viewpager.widget.ViewPager
+    \<androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/Clueless" />
+        android:contentDescription="@string/app_name" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

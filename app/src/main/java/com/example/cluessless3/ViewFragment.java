@@ -1,19 +1,10 @@
 package com.example.cluessless3;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
 public class ViewFragment extends Fragment{
@@ -34,7 +25,7 @@ public class ViewFragment extends Fragment{
         }
     }
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this.getContext()) {
+    /*private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback() {
 
         @Override
         public void onManagerConnected(int status) {
@@ -56,7 +47,7 @@ public class ViewFragment extends Fragment{
     public void onResume()
     {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_6, this.getContext(), mLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_6, this.requireContext(), mLoaderCallback);
     }
 
 
@@ -71,7 +62,7 @@ public class ViewFragment extends Fragment{
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent scan = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Intent scan = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 //startActivityForResult(scan,Detection());
 
@@ -80,7 +71,7 @@ public class ViewFragment extends Fragment{
         });
 
         return view;
-    }
+    }*/
 
    /* private int Detection() {
         VideoCapture cap = new VideoCapture((Integer) CV_CAP_ANY);

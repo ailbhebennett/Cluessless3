@@ -1,6 +1,16 @@
 buildscript {
+
+    repositories {
+        gradlePluginPortal()
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
+    }
+
     dependencies {
         classpath 'com.google.gms:google-services:4.3.13'
+        //implementation 'com.github.CanHub:Android-Image-Cropper:4.3.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

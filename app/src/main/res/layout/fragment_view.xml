@@ -21,11 +21,6 @@
         android:textColor="@color/white" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
         <RelativeLayout
             android:id="@+id/viewClothing_camera_frag"
             android:layout_width="match_parent"
@@ -47,8 +42,6 @@
 
         </RelativeLayout>
 
-
-    </LinearLayout>
 
 
 </RelativeLayout>
