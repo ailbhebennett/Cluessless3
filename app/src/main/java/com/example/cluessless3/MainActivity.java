@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,13 +20,11 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int CAMERA_RESULT_CODE = 1;
     //Declare required variables
     private TabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Button uIButton;
-    private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static final int pic_id = 123;
     private ImageView imageId;
 
@@ -43,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         int MY_PERMISSIONS_REQUEST_CAMERA = 333;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
             }
@@ -56,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Tabbed Layout
-        viewPager =(ViewPager) findViewById(R.id.viewPager);
+        /*viewPager =(ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabView);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Scan CLothing"));
+        tabLayout.addTab(tabLayout.newTab().setText("Scan Clothing"));
         tabLayout.addTab(tabLayout.newTab().setText("View Clothing"));
         tabLayout.addTab(tabLayout.newTab().setText("Saved Clothes"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
             }
-        });
+        });*/
 
     }
 
@@ -92,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Intent cintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cintent, pic_id);
+            onActivityResult(pic_id, 0,cintent);
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id){
             Bitmap photo = (Bitmap) data.getExtras().get("data");

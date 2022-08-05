@@ -1,28 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ScanFragment"
+    android:theme="@style/Theme.AppCompat.Light">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <fragment
+        android:name="com.example.cluessless3.ScanFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/Clueless" />
+        android:id="@+id/scanFragment"/>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabView"
+    <TextView
+        android:id="@+id/fragment_scan_txt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#E91E63"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabTextColor="@color/white" />
+        android:layout_height="match_parent"
+        android:text="@string/scan"
+        android:textSize="40sp"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:id="@+id/getClothing_camera_frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_centerHorizontal="false"
+            android:layout_marginTop="69dp"
+            android:adjustViewBounds="true"
+            android:background="#E91E63"
+            android:padding="3dp" />
+
+        <Button
+            android:id="@+id/btn_scan_now"
+            android:layout_width="wrap_content"
+            android:layout_height="94dp"
+            android:layout_marginBottom="33dp"
+            android:text="@string/scan"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:theme="@style/Theme.AppCompat.Light" />
 
 
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
