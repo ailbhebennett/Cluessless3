@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
 
+        uIButton = (Button) findViewById(R.id.btn_scan_now);
         imageId = (ImageView) findViewById(R.id.product_image);
 
         //Request camera permissions
@@ -47,9 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         }//Obtained camera permissions
 
-        uIButton = (Button) findViewById(R.id.btn_scan_now);
 
-        uIButton.setOnClickListener(new BtnClick());
+
+        uIButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera_intent,pic_id);
+            }
+        });
 
 
 
@@ -84,21 +91,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-    }
-
-    private class BtnClick implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Intent cintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            onActivityResult(pic_id, 0,cintent);
-        }
-    }
+    }//end onCreate
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == pic_id){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-
             imageId.setImageBitmap(photo);
 
 
