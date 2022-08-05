@@ -6,12 +6,6 @@
     tools:context=".ScanFragment"
     android:theme="@style/Theme.AppCompat.Light">
 
-    <fragment
-        android:name="com.example.cluessless3.ScanFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scanFragment"/>
-
     <TextView
         android:id="@+id/fragment_scan_txt"
         android:layout_width="match_parent"
@@ -36,30 +30,6 @@
             android:adjustViewBounds="true"
             android:background="#E91E63"
             android:padding="3dp" />
-
-        <Button
-            android:id="@+id/btn_scan_now"
-            android:layout_width="wrap_content"
-            android:layout_height="94dp"
-            android:layout_marginBottom="33dp"
-            android:text="@string/scan"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:theme="@style/Theme.AppCompat.Light" />
-
-        <Button
-            android:id="@+id/btn_crop_now"
-            android:layout_width="wrap_content"
-            android:layout_height="94dp"
-            android:layout_marginBottom="33dp"
-            android:text="@string/crop"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:theme="@style/Theme.AppCompat.Light" />
-
-
 
     </LinearLayout>
 

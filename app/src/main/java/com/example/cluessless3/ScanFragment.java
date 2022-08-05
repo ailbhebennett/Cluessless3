@@ -1,160 +1,154 @@
 package com.example.cluessless3;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
-
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.cluessless3.databinding.FragmentScanBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Context;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.concurrent.atomic.AtomicMarkableReference;
 
-public class ScanFragment extends Fragment {
+public class ScanFragment extends Fragment{
 
-    public Button btnScan;
-    private Button btn_saveToDatabase;
+    private static final int CROP_IMAGE_ACTIVITY_REQUEST_CODE = 1;
+    private static final int CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE = 2;
+    private static final int CAMERA_CAPTURE = 3;
+    public Button btn_scan;
+    private Button btn_crop_now;
+    private static final int PIC_CROP = 2;
+
+
     public ImageView imageScan;
     private Drawable drawable;
-    private static final int Image_Capture_Code = 1;
-    private Exception exception;
-    private UploadTask.TaskSnapshot taskSnapshot;
-    private Uri imageUri;
+    private Bitmap bitmap;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    //keep track of cropping intent
-    final int PIC_CROP = 2;
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private UploadTask.TaskSnapshot taskSnapshot;
+    private FragmentScanBinding binding;
+    private Uri uri;
+    private ScanFragment scanFragment;
+    private ViewGroup rootView;
+    private static final int Image_capture_Code = 1;
 
 
-    //taking photo
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scan,container,false);
-        btnScan = (Button) view.findViewById(R.id.btn_scan_now);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_scan, container,false);
+        btn_scan = (Button) view.findViewById(R.id.btn_scan_now);
         imageScan = (ImageView) view.findViewById(R.id.product_image);
 
-        //onclick
-        btnScan.setOnClickListener(new View.OnClickListener() {
+        /*btn_scan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent scan = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent cInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File picture= null;
 
-                startActivityForResult(scan,Image_Capture_Code);
+                try{
+                    picture = File.createTempFile("temp",".jpg",getContext().getCacheDir());
+                    cInt.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext(),BuildConfig.APPLICATION_ID+".provider",picture));
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
 
+                }
             }
         });
 
         return view;
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 3 && resultCode == RESULT_OK){
+            Log.d("text", "onActivityResult" + uri);
 
-
-    public void onActivityResult(int request, int resultC, Intent data){
-        if(request == Image_Capture_Code){
-            if(resultC == RESULT_OK){
-                try{
-                    //get picture URI
-                    imageUri = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                    performCrop();
-                }
-                catch(Exception e){
-
-                }
-
-            }
-            else if (request == PIC_CROP) {
-                Bundle extras = data.getExtras();
-                Bitmap bitmap = extras.getParcelable("data");
-
-                //display bitmap
-                imageScan.findViewById(R.id.product_image);
-                imageScan.setImageBitmap(bitmap);
-
-            }
-            else if(resultC == RESULT_CANCELED){
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
-            }
         }
-    };
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
     private void performCrop() {
         try {
             Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(imageUri, "image/*");
-            cropIntent.putExtra("Crop", "true");
+            cropIntent.setDataAndType(uri, "image/");
+            cropIntent.putExtra("crop", true);
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
             cropIntent.putExtra("outputX", 256);
             cropIntent.putExtra("outputY", 256);
-
-            //get data
             cropIntent.putExtra("return-data", true);
+
             startActivityForResult(cropIntent, PIC_CROP);
 
-
-        } catch (ActivityNotFoundException anfe){
-            String errorMessage = ("Not working");
-            Toast toast = Toast.makeText(getActivity() , errorMessage, Toast.LENGTH_SHORT);
+        } catch (ActivityNotFoundException anfe) {
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
 
 
-        private void saveImageToDatabase(); {
+        /*public void uploadImage(View v){
+            if(uri !=null){
+                ProgressDialog progressDialog = new ProgressDialog(getContext());
+                progressDialog.setTitle("Uploading...");
+                progressDialog.show();
 
-            StorageReference storageRef = firebaseStorage.getReference();
+                StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
 
-            btn_saveToDatabase Onclick(){
-                // Create a reference to "mountains.jpg"
-                StorageReference mountainsRef = storageRef.child("mountains.jpg");
-
-// Create a reference to 'images/mountains.jpg'
-                StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
-
-// While the file names are the same, the references point to different files
-                mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-                mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+                storageReference.putFile(uri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(),"Uploaded", Toast.LENGTH_SHORT);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(),"oops, failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Uploaded" + (int)progress+"%");
+                            }
+                        });
 
             }
+                {
+
+                }
 
 
-
-        }
-
+            }*/
+        return view;
     }
-
-
-
-
-
 
 }
