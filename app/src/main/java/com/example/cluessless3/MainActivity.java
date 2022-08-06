@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,7 +16,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button uIButton;
     private static final int pic_id = 123;
     private ImageView imageId;
+    private StorageReference storageRef;
+    private String path;
 
 
     @Override
@@ -49,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
         }//Obtained camera permissions
 
 
-
         uIButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(camera_intent,pic_id);
+                startActivityForResult(camera_intent, pic_id);
+
+                storageRef = FirebaseStorage.getInstance().getReference();
             }
         });
-
 
 
         //Tabbed Layout
@@ -95,14 +104,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id){
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageId.setImageBitmap(photo);
+        if (requestCode == pic_id) {
+            Bitmap photo = ((BitmapDrawable) imageId.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG,100,baos);
+            byte[] datas = baos.toByteArray();
+
+            UploadTask uploadTask = storageRef.putBytes(datas);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            });
 
 
         }
     }
 
+    //images/image.jpg
 
 
 }
