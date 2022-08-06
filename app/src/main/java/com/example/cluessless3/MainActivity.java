@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageId;
     private StorageReference storageRef;
     private String path;
+    private UploadTask uploadTask;
 
 
     @Override
@@ -104,22 +107,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id) {
+        if (requestCode == pic_id && data != null) {
             Bitmap photo = ((BitmapDrawable) imageId.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG,100,baos);
-            byte[] datas = baos.toByteArray();
+            Bundle bundle = data.getExtras();
+            if (bundle!=null){
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG,100,baos);
+                byte[] datas = baos.toByteArray();
+                uploadTask = storageRef.putBytes(datas);
 
-            UploadTask uploadTask = storageRef.putBytes(datas);
+            }
 
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                    Uri uri = taskSnapshot.getUploadSessionUri();
+                    Toast.makeText(MainActivity.this, "Upload done", Toast.LENGTH_LONG).show();
                 }
             });
-
-
         }
     }
 

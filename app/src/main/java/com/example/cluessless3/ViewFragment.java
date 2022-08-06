@@ -42,7 +42,7 @@ public class ViewFragment extends Fragment{
         }
     }
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getContext()) {
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getContext()) {
 
         @Override
         public void onManagerConnected(int status) {

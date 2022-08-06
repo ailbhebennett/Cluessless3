@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.quickbirdstudios:opencv:3.4.1'
     //implementation project(':opencv')
 
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.0'
 
 
     // Import the BoM for the Firebase platform
