@@ -1,14 +1,17 @@
 package com.example.cluessless3;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,15 +21,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
 
     //Declare required variables
@@ -39,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private String path;
     private UploadTask uploadTask;
+    private Bitmap photo;
+    private Uri mImageURI;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -62,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         uIButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("deprecation")
             @Override
             public void onClick(View view) {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 startActivityForResult(camera_intent, pic_id);
 
                 storageRef = FirebaseStorage.getInstance().getReference();
@@ -107,28 +117,52 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == pic_id && data != null) {
-            Bitmap photo = ((BitmapDrawable) imageId.getDrawable()).getBitmap();
-            Bundle bundle = data.getExtras();
-            if (bundle!=null){
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.JPEG,100,baos);
-                byte[] datas = baos.toByteArray();
-                uploadTask = storageRef.putBytes(datas);
-
-            }
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri uri = taskSnapshot.getUploadSessionUri();
-                    Toast.makeText(MainActivity.this, "Upload done", Toast.LENGTH_LONG).show();
-                }
-            });
+        if (requestCode == pic_id && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mImageURI = data.getData();
+            File file = new File(mImageURI.getPath());
+            final String[] split = file.getPath().split("");
+            Picasso.get().load(mImageURI).into(uploadToFirebase(mImageURI));
         }
     }
 
-    //images/image.jpg
 
+    private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = this.getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadToFirebase(Uri mImageURI){
+        if(mImageURI !=null){
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            storageRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageURI));
+            storageRef.putFile(mImageURI).addOnSuccessListener(
+                    taskSnapshot -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(this,"Saved", Toast.LENGTH_SHORT).show();
+                        storageRef.getDownloadUrl().addOnSuccessListener(uri ->{
+                            Object upload = new Object(uri.toString());
+                            String uploadId = databaseReference.push().getKey();
+                            assert uploadId != null;
+                            databaseReference.child(uploadId).setValue(upload);
+                        });
+                    }).addOnProgressListener(snapshot -> {
+                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressDialog.setMessage("Uploaded" + (int) progress + "%");
+            })
+                    .addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(this, "ERROR" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+
+
+
+        }
+    }
 
 }
+
+    //images/image.jpg
